@@ -1,0 +1,41 @@
+[
+  {
+    "_id": "tomato-2",
+    "name": "Farm Fresh Country Tomatoes",
+    "category": "Vegetables",
+    "price": 38,
+    "quantity": "80 kg available",
+    "location": "Dindigul, Tamil Nadu",
+    "phone": "9123456780",
+    "images": [
+      "/placeholder-market.svg"
+    ],
+    "description": "Naturally ripened tomatoes suited for retail buyers, hotels, and neighborhood stores."
+  },
+  {
+    "_id": "banana-3",
+    "name": "Nendran Bananas",
+    "category": "Fruits",
+    "price": 68,
+    "quantity": "120 bunches available",
+    "location": "Pollachi, Tamil Nadu",
+    "phone": "9000012345",
+    "images": [
+      "/placeholder-market.svg"
+    ],
+    "description": "Carefully graded Nendran bananas with consistent size, ideal for fresh sale and chips production."
+  },
+  {
+    "_id": "thinai-rice-1",
+    "name": "Traditional Thinai Rice",
+    "category": "Millets",
+    "price": 92,
+    "quantity": "25 kg available",
+    "location": "Thanjavur, Tamil Nadu",
+    "phone": "9876543210",
+    "images": [
+      "/placeholder-market.svg"
+    ],
+    "description": "Stone-cleaned foxtail millet rice from a small family farm with weekly harvest packing."
+  }
+]

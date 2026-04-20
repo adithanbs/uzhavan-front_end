@@ -4,24 +4,22 @@ import { revalidatePath } from "next/cache";
 
 import type { ProductFormValues } from "@/app/add-product/constants";
 import { buildCreateProductPayload } from "@/app/add-product/utils";
-import { createProduct } from "@/app/lib/products";
-import { validateProductInput } from "@/app/lib/product-validation";
+import { createProduct } from "@/app/services/product-service";
 
 export async function createProductAction(form: ProductFormValues) {
-  const result = validateProductInput(buildCreateProductPayload(form));
+  try {
+    await createProduct(buildCreateProductPayload(form));
+    revalidatePath("/");
+    revalidatePath("/sitemap.xml");
 
-  if (!result.success) {
+    return {
+      success: true,
+      error: "",
+    };
+  } catch (error) {
     return {
       success: false,
-      error: result.error,
+      error: error instanceof Error ? error.message : "Unable to save product.",
     };
   }
-
-  await createProduct(result.data);
-  revalidatePath("/");
-
-  return {
-    success: true,
-    error: "",
-  };
 }

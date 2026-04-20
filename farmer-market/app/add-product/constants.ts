@@ -31,7 +31,7 @@ export const PRODUCT_FORM_LIMITS = {
 
 export const PRODUCT_FORM_PATTERNS = {
   phone: /^\d{10}$/,
-  internalImagePath: /^$|^\/.+/,
+  productImage: /^$|^\/.+|^https?:\/\/.+/i,
 } as const;
 
 export const PRODUCT_FORM_LABELS = {
@@ -71,7 +71,7 @@ export const PRODUCT_FORM_MESSAGES = {
   locationMax: `Location must be ${PRODUCT_FORM_LIMITS.location} characters or less.`,
   phoneRequired: "Phone number is required.",
   phoneInvalid: `Enter a valid ${PRODUCT_FORM_LIMITS.phoneDigits}-digit phone number.`,
-  imageInvalid: "Use an internal image path starting with /.",
+  imageInvalid: "Use an internal path or a valid image URL.",
   descriptionMax: `Description must be ${PRODUCT_FORM_LIMITS.description} characters or less.`,
   submitFailed: "Unable to save product.",
   submitUnknown: "Something went wrong while posting the product.",

@@ -2,16 +2,17 @@ import type { Metadata } from "next";
 
 import Navbar from "@/app/components/Navbar";
 import ProductCard from "@/app/components/ProductCard";
-import { getAllProducts } from "@/app/lib/products";
-import { siteConfig } from "@/app/lib/site";
+import { siteConfig } from "@/app/config/site";
+import { getProducts } from "@/app/services/product-service";
+
+export const dynamic = "force-dynamic";
 
 export const metadata: Metadata = {
-  title: siteConfig.title,
   description: siteConfig.description,
 };
 
 export default async function Home() {
-  const products = await getAllProducts();
+  const products = await getProducts();
 
   return (
     <div className="min-h-screen bg-[radial-gradient(circle_at_top,_rgba(243,244,214,0.95),_rgba(247,250,244,1)_46%,_rgba(239,244,235,1)_100%)]">
@@ -62,9 +63,16 @@ export default async function Home() {
           </div>
 
           <div className="grid grid-cols-1 gap-4 sm:gap-5 md:grid-cols-2 xl:grid-cols-3">
-            {products.map((product) => (
-              <ProductCard key={product._id} product={product} />
-            ))}
+            {products.length > 0 ? (
+              products.map((product) => (
+                <ProductCard key={product._id} product={product} />
+              ))
+            ) : (
+              <div className="rounded-[1.5rem] border border-emerald-950/10 bg-white p-6 text-sm leading-6 text-slate-600 md:col-span-2 xl:col-span-3">
+                Products are not available right now. Please make sure the
+                backend API is running at http://localhost:5050/api/products.
+              </div>
+            )}
           </div>
         </section>
       </main>

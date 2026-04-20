@@ -1,5 +1,10 @@
 import type { NextConfig } from "next";
 
+const apiBaseUrl = process.env.API_BASE_URL ||
+  process.env.NEXT_PUBLIC_API_BASE_URL ||
+  "http://localhost:5050/api";
+const apiUrl = new URL(apiBaseUrl);
+
 const securityHeaders = [
   {
     key: "Referrer-Policy",
@@ -22,6 +27,16 @@ const securityHeaders = [
 const nextConfig: NextConfig = {
   poweredByHeader: false,
   reactStrictMode: true,
+  images: {
+    remotePatterns: [
+      {
+        protocol: apiUrl.protocol.replace(":", "") as "http" | "https",
+        hostname: apiUrl.hostname,
+        port: apiUrl.port,
+        pathname: "/**",
+      },
+    ],
+  },
   async headers() {
     return [
       {

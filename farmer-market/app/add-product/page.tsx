@@ -2,10 +2,9 @@ import type { Metadata } from "next";
 
 import Navbar from "@/app/components/Navbar";
 import AddProductForm from "@/app/add-product/AddProductForm";
-import { siteConfig } from "@/app/lib/site";
 
 export const metadata: Metadata = {
-  title: `Add Product | ${siteConfig.name}`,
+  title: "Add Product",
   description: "Create a farmer listing with validated inputs and a cleaner submission flow.",
 };
 

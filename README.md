@@ -1,1 +1,0 @@
-# uzhavan-front_end

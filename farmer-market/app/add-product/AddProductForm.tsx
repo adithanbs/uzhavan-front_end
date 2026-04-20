@@ -175,7 +175,7 @@ export default function AddProductForm() {
         <input
           {...register("image", {
             pattern: {
-              value: PRODUCT_FORM_PATTERNS.internalImagePath,
+              value: PRODUCT_FORM_PATTERNS.productImage,
               message: PRODUCT_FORM_MESSAGES.imageInvalid,
             },
           })}

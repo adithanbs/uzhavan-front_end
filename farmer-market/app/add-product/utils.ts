@@ -1,11 +1,16 @@
 import type { ProductFormValues } from "@/app/add-product/constants";
 import { PRODUCT_FORM_MESSAGES } from "@/app/add-product/constants";
+import type { CreateProductPayload } from "@/app/services/product-service";
 
-export function buildCreateProductPayload(form: ProductFormValues) {
+export function buildCreateProductPayload(
+  form: ProductFormValues,
+): CreateProductPayload {
+  const { image, price, ...product } = form;
+
   return {
-    ...form,
-    price: Number(form.price),
-    images: form.image ? [form.image] : [],
+    ...product,
+    price: Number(price),
+    images: image ? [image] : [],
   };
 }
 

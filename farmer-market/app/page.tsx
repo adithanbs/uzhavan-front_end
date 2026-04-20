@@ -28,7 +28,7 @@ export default async function Home() {
               Discover trusted farmers, fresher produce, and faster local buying.
             </h1>
             <p className="max-w-2xl text-sm leading-7 text-slate-600 sm:text-base lg:text-lg">
-              Uzhavan Market is optimized for quick browsing, direct calls, and
+              UzhaMart is optimized for quick browsing, direct calls, and
               future-ready expansion into richer farmer listings, logistics, and
               verified supply workflows.
             </p>

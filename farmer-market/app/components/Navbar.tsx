@@ -10,7 +10,7 @@ export default function Navbar() {
           </span>
           <div className="min-w-0">
             <p className="text-base font-semibold tracking-wide sm:text-lg">
-              Uzhavan Market
+             UzhaMart
             </p>
             <p className="text-[11px] uppercase tracking-[0.22em] text-emerald-200 sm:text-xs sm:tracking-[0.3em]">
               Farmer-first commerce

@@ -1,6 +1,6 @@
 export const siteConfig = {
-  name: "Uzhavan Market",
-  title: "Uzhavan Market | Fresh produce direct from farmers",
+  name: "UzhaMart",
+  title: "UzhaMart | Fresh produce direct from farmers",
   description:
     "A fast farmer marketplace for discovering fresh vegetables, fruits, grains, and local produce directly from trusted growers.",
   locale: "en_IN",

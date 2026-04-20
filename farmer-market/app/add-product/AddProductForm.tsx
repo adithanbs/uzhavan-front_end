@@ -6,6 +6,7 @@ import { useForm } from "react-hook-form";
 
 import { createProductAction } from "@/app/add-product/actions";
 import {
+  PRODUCT_CATEGORY_OPTIONS,
   PRODUCT_FORM_DEFAULT_VALUES,
   PRODUCT_FORM_LABELS,
   PRODUCT_FORM_LIMITS,
@@ -76,17 +77,19 @@ export default function AddProductForm() {
           <span className="text-sm font-medium text-slate-700">
             {PRODUCT_FORM_LABELS.category}
           </span>
-          <input
+          <select
             {...register("category", {
               required: PRODUCT_FORM_MESSAGES.categoryRequired,
-              maxLength: {
-                value: PRODUCT_FORM_LIMITS.category,
-                message: PRODUCT_FORM_MESSAGES.categoryMax,
-              },
             })}
-            placeholder={PRODUCT_FORM_PLACEHOLDERS.category}
-            className={PRODUCT_FORM_STYLES.field}
-          />
+            className={PRODUCT_FORM_STYLES.select}
+          >
+            <option value="">{PRODUCT_FORM_PLACEHOLDERS.category}</option>
+            {PRODUCT_CATEGORY_OPTIONS.map((category) => (
+              <option key={category} value={category}>
+                {category}
+              </option>
+            ))}
+          </select>
           {errors.category ? (
             <span className={PRODUCT_FORM_STYLES.error}>{errors.category.message}</span>
           ) : null}
@@ -97,7 +100,6 @@ export default function AddProductForm() {
           </span>
           <input
             {...register("price", {
-              required: PRODUCT_FORM_MESSAGES.priceRequired,
               validate: validatePositivePrice,
             })}
             placeholder={PRODUCT_FORM_PLACEHOLDERS.price}
@@ -114,7 +116,6 @@ export default function AddProductForm() {
           </span>
           <input
             {...register("quantity", {
-              required: PRODUCT_FORM_MESSAGES.quantityRequired,
               maxLength: {
                 value: PRODUCT_FORM_LIMITS.quantity,
                 message: PRODUCT_FORM_MESSAGES.quantityMax,
@@ -174,6 +175,7 @@ export default function AddProductForm() {
         </span>
         <input
           {...register("image", {
+            required: PRODUCT_FORM_MESSAGES.imageRequired,
             pattern: {
               value: PRODUCT_FORM_PATTERNS.productImage,
               message: PRODUCT_FORM_MESSAGES.imageInvalid,

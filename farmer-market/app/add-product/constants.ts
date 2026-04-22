@@ -26,6 +26,9 @@ export const PRODUCT_FORM_LIMITS = {
   location: 60,
   description: 400,
   phoneDigits: 10,
+  imageUploadMaxBytes: 5 * 1024 * 1024,
+  imageMaxDimension: 1600,
+  imageUploadQuality: 0.82,
 } as const;
 
 export const PRODUCT_FORM_PATTERNS = {
@@ -51,7 +54,7 @@ export const PRODUCT_FORM_LABELS = {
   quantity: "Quantity details (optional)",
   location: "Location",
   phone: "Phone",
-  image: "Image URL",
+  image: "Product photo",
   description: "Description (optional)",
   submit: "Post Product",
   submitting: "Posting...",
@@ -64,7 +67,6 @@ export const PRODUCT_FORM_PLACEHOLDERS = {
   quantity: "Quantity details (optional)",
   location: "Location",
   phone: "10-digit phone number",
-  image: "Image URL",
   description: "Description (optional)",
 } as const;
 
@@ -78,8 +80,12 @@ export const PRODUCT_FORM_MESSAGES = {
   locationMax: `Location must be ${PRODUCT_FORM_LIMITS.location} characters or less.`,
   phoneRequired: "Phone number is required.",
   phoneInvalid: `Enter a valid ${PRODUCT_FORM_LIMITS.phoneDigits}-digit phone number.`,
-  imageRequired: "Product image URL is required.",
-  imageInvalid: "Use an internal path or a valid image URL.",
+  imageRequired: "A product photo is required.",
+  imageInvalid: "Choose a valid image from your phone or computer.",
+  imageTooLarge: `Choose an image smaller than ${Math.floor(PRODUCT_FORM_LIMITS.imageUploadMaxBytes / (1024 * 1024))} MB.`,
+  imageProcessing: "Preparing your photo...",
+  imageProcessingFailed:
+    "We could not prepare that photo. Please try another image.",
   descriptionMax: `Description must be ${PRODUCT_FORM_LIMITS.description} characters or less.`,
   submitSuccess: "Your product was added successfully.",
   submitFailed: "Unable to save product.",

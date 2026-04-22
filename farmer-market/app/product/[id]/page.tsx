@@ -24,6 +24,7 @@ export async function generateMetadata({
     product.description ||
     `${product.category} available from ${product.location}.`;
   const image = product.images?.[0] || "/placeholder-market.svg";
+  const isInlineImage = image.startsWith("data:");
 
   return {
     title: product.name,
@@ -32,13 +33,13 @@ export async function generateMetadata({
       title: product.name,
       description,
       type: "article",
-      images: [{ url: image, alt: product.name }],
+      images: isInlineImage ? undefined : [{ url: image, alt: product.name }],
     },
     twitter: {
       card: "summary_large_image",
       title: product.name,
       description,
-      images: [image],
+      images: isInlineImage ? undefined : [image],
     },
   };
 }

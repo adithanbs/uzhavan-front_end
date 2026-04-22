@@ -1,4 +1,3 @@
-import Image from "next/image";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 
@@ -60,13 +59,11 @@ export default async function ProductDetail({ params }: ProductPageProps) {
 
       <main className="mx-auto grid w-full max-w-6xl gap-6 px-4 py-6 sm:gap-8 sm:px-6 sm:py-8 lg:grid-cols-[1.15fr_0.85fr] lg:px-8">
         <section className="overflow-hidden rounded-[1.75rem] border border-emerald-950/10 bg-white shadow-[0_30px_80px_-50px_rgba(24,63,38,0.4)] sm:rounded-[2rem]">
-          <div className="relative aspect-[4/3] bg-emerald-100">
-            <Image
+          <div className="aspect-[4/3] bg-emerald-100">
+            <img
               src={image}
               alt={`${product.name} from ${product.location}`}
-              fill
-              sizes="(max-width: 1024px) 100vw, 55vw"
-              className="object-cover"
+              className="h-full w-full object-cover"
             />
           </div>
         </section>

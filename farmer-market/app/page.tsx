@@ -80,8 +80,8 @@ export default async function Home(props: PageProps<"/">) {
               ))
             ) : (
               <div className="rounded-[1.5rem] border border-emerald-950/10 bg-white p-6 text-sm leading-6 text-slate-600 md:col-span-2 xl:col-span-3">
-                Products are not available right now. Please try again shortly
-                while we reconnect to the marketplace service.
+                Products are not available right now. Please make sure the
+                backend API is running at http://localhost:5050/api/products.
               </div>
             )}
           </div>

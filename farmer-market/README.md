@@ -1,63 +1,47 @@
-# UzhaMart Frontend
+This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
-Next.js 16 frontend for the UzhaMart farmer marketplace.
+## Getting Started
 
-## Local Development
-
-1. Copy `.env.example` to `.env`.
-2. Set `API_BASE_URL` to your backend API.
-3. Set `NEXT_PUBLIC_SITE_URL` to `http://localhost:3000`.
-4. Install dependencies and start the app:
+First, run the development server:
 
 ```bash
-npm install
 npm run dev
+# or
+yarn dev
+# or
+pnpm dev
+# or
+bun dev
 ```
 
-## Environment Variables
+Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-```bash
-API_BASE_URL=https://your-backend.example.com/api
-NEXT_PUBLIC_SITE_URL=https://your-frontend.example.com
-```
+You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
 
-- `API_BASE_URL`: Server-side base URL used by the app to fetch and create products.
-- `NEXT_PUBLIC_SITE_URL`: Public frontend origin used for canonical metadata, robots, and sitemap URLs.
+This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
 
-## Production Readiness
+## Learn More
 
-- `npm run lint`
-- `npm run build`
-- Confirm the backend is reachable from the deployed frontend environment.
-- Confirm `NEXT_PUBLIC_SITE_URL` matches the final production domain.
-- Confirm the backend supports CORS for your frontend origin if they are on different domains.
+To learn more about Next.js, take a look at the following resources:
 
-## Deploying
+- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
+- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
 
-This app is ready for platforms that support Next.js 16, including Vercel.
+You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
 
-### Vercel
+## Deploy on Vercel
 
-1. Import the repository into Vercel.
-2. Add the production environment variables:
-   `API_BASE_URL`
-   `NEXT_PUBLIC_SITE_URL`
-3. Deploy.
-4. After deploy, verify:
-   - `/`
-   - `/add-product`
-   - `/product/<id>`
-   - `/robots.txt`
-   - `/sitemap.xml`
+The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
 
-### Other Hosts
+Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
 
-Use the standard production flow:
 
-```bash
-npm install
-npm run build
-npm run start
-```
+PRODUCTION_API_BASE_URL=https://uzhamart-backend.onrender.com/api
+API_BASE_URL=http://localhost:5050/api
+NEXT_PUBLIC_SITE_URL=http://localhost:3000
 
-The host must provide Node.js and allow the app to reach your backend API.
+
+DEV_API_SOURCE=production
+LOCAL_API_BASE_URL=http://localhost:5050/api
+PRODUCTION_API_BASE_URL=https://uzhamart-backend.onrender.com/api
+NEXT_PUBLIC_SITE_URL=http://localhost:3000

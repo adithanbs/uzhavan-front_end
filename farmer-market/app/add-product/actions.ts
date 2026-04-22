@@ -14,11 +14,13 @@ export async function createProductAction(form: ProductFormValues) {
 
     return {
       success: true,
+      message: "Your product was added successfully.",
       error: "",
     };
   } catch (error) {
     return {
       success: false,
+      message: "",
       error: error instanceof Error ? error.message : "Unable to save product.",
     };
   }

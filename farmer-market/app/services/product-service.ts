@@ -1,7 +1,18 @@
-import "server-only";
-
-import { API_ENDPOINTS } from "@/app/config/api";
 import type { Product } from "@/app/types/product";
+
+type ApiResponse<T> = {
+  success: boolean;
+  data: T;
+};
+
+type ApiErrorResponse = {
+  message?: string;
+  error?: string;
+  data?: {
+    message?: string;
+    error?: string;
+  };
+};
 
 export type CreateProductPayload = {
   name: string;
@@ -14,8 +25,27 @@ export type CreateProductPayload = {
   description?: string;
 };
 
+async function getResponseData<T>(response: Response): Promise<T> {
+  const payload = (await response.json()) as ApiResponse<T>;
+  return payload.data;
+}
+
+function getApiErrorMessage(payload: ApiErrorResponse | null): string | null {
+  if (!payload) {
+    return null;
+  }
+
+  return (
+    payload.message ||
+    payload.error ||
+    payload.data?.message ||
+    payload.data?.error ||
+    null
+  );
+}
+
 export async function getProducts(): Promise<Product[]> {
-  const response = await fetch(API_ENDPOINTS.products, {
+  const response = await fetch(process.env.API_BASE_URL + "/products", {
     cache: "no-store",
   });
 
@@ -23,11 +53,11 @@ export async function getProducts(): Promise<Product[]> {
     return [];
   }
 
-  return response.json();
+  return getResponseData<Product[]>(response);
 }
 
 export async function getProductById(id: string): Promise<Product | null> {
-  const response = await fetch(API_ENDPOINTS.productById(id), {
+  const response = await fetch(process.env.API_BASE_URL + "/products/" + id, {
     cache: "no-store",
   });
 
@@ -35,13 +65,13 @@ export async function getProductById(id: string): Promise<Product | null> {
     return null;
   }
 
-  return response.json();
+  return getResponseData<Product>(response);
 }
 
 export async function createProduct(
   product: CreateProductPayload,
 ): Promise<Product> {
-  const response = await fetch(API_ENDPOINTS.products, {
+  const response = await fetch(process.env.API_BASE_URL + "/products", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -51,8 +81,16 @@ export async function createProduct(
   });
 
   if (!response.ok) {
-    throw new Error("Unable to save product.");
+    let errorPayload: ApiErrorResponse | null = null;
+
+    try {
+      errorPayload = (await response.json()) as ApiErrorResponse;
+    } catch {
+      errorPayload = null;
+    }
+
+    throw new Error(getApiErrorMessage(errorPayload) || "Unable to save product.");
   }
 
-  return response.json();
+  return getResponseData<Product>(response);
 }

@@ -81,6 +81,7 @@ export const PRODUCT_FORM_MESSAGES = {
   imageRequired: "Product image URL is required.",
   imageInvalid: "Use an internal path or a valid image URL.",
   descriptionMax: `Description must be ${PRODUCT_FORM_LIMITS.description} characters or less.`,
+  submitSuccess: "Your product was added successfully.",
   submitFailed: "Unable to save product.",
   submitUnknown: "Something went wrong while posting the product.",
 } as const;

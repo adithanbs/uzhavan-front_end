@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 
 import Navbar from "@/app/components/Navbar";
 import ProductCard from "@/app/components/ProductCard";
+import StatusBanner from "@/app/components/StatusBanner";
 import { siteConfig } from "@/app/config/site";
 import { getProducts } from "@/app/services/product-service";
 
@@ -11,14 +12,24 @@ export const metadata: Metadata = {
   description: siteConfig.description,
 };
 
-export default async function Home() {
+function getSearchParamValue(value: string | string[] | undefined) {
+  return Array.isArray(value) ? value[0] : value;
+}
+
+export default async function Home(props: PageProps<"/">) {
   const products = await getProducts();
+  const searchParams = await props.searchParams;
+  const status = getSearchParamValue(searchParams.status);
 
   return (
     <div className="min-h-screen bg-[radial-gradient(circle_at_top,_rgba(243,244,214,0.95),_rgba(247,250,244,1)_46%,_rgba(239,244,235,1)_100%)]">
       <Navbar />
 
       <main className="mx-auto flex w-full max-w-6xl flex-col gap-8 px-4 py-6 sm:gap-10 sm:px-6 sm:py-8 lg:px-8">
+        {status === "product-added" ? (
+          <StatusBanner message="Your product was added successfully." />
+        ) : null}
+
         <section className="grid gap-5 rounded-[1.75rem] border border-emerald-950/10 bg-white/80 p-5 shadow-[0_20px_70px_-45px_rgba(24,63,38,0.45)] backdrop-blur sm:gap-6 sm:rounded-[2rem] sm:p-8 lg:grid-cols-[1.3fr_0.7fr]">
           <div className="space-y-4">
             <p className="text-xs font-semibold uppercase tracking-[0.24em] text-emerald-700 sm:text-sm sm:tracking-[0.3em]">

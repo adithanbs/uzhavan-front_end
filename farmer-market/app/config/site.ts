@@ -7,6 +7,22 @@ export const siteConfig = {
   defaultUrl: "http://localhost:3000",
 };
 
+function normalizeSiteUrl(value: string) {
+  return value.replace(/\/+$/, "");
+}
+
 export function getSiteUrl() {
-  return process.env.NEXT_PUBLIC_SITE_URL || siteConfig.defaultUrl;
+  const configuredUrl = process.env.NEXT_PUBLIC_SITE_URL;
+  const vercelUrl =
+    process.env.VERCEL_PROJECT_PRODUCTION_URL || process.env.VERCEL_URL;
+
+  if (configuredUrl) {
+    return normalizeSiteUrl(configuredUrl);
+  }
+
+  if (vercelUrl) {
+    return normalizeSiteUrl(`https://${vercelUrl}`);
+  }
+
+  return siteConfig.defaultUrl;
 }

@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 
 import type { Product } from "@/app/types/product";
@@ -12,11 +13,12 @@ export default function ProductCard({ product }: ProductCardProps) {
   return (
     <article className="flex h-full flex-col overflow-hidden rounded-[1.5rem] border border-emerald-950/10 bg-white shadow-[0_20px_60px_-40px_rgba(24,63,38,0.35)] transition hover:-translate-y-0.5 hover:shadow-[0_28px_70px_-40px_rgba(24,63,38,0.45)] sm:rounded-[1.75rem]">
       <div className="relative aspect-[4/3] overflow-hidden bg-emerald-100">
-        <img
+        <Image
           src={imageSrc}
           alt={`${product.name} from ${product.location}`}
-          className="h-full w-full object-cover"
-          loading="lazy"
+          fill
+          sizes="(max-width: 768px) 100vw, (max-width: 1280px) 50vw, 33vw"
+          className="object-cover"
         />
       </div>
 

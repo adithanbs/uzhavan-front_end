@@ -23,7 +23,10 @@ import {
   validatePositivePrice,
 } from "@/app/add-product/utils";
 
-function readFileAsDataUrl(file: File) {
+const MOBILE_IMAGE_FILE_NAME_PATTERN =
+  /\.(avif|bmp|gif|heic|heif|jpe?g|png|webp)$/i;
+
+function readBlobAsDataUrl(blob: Blob) {
   return new Promise<string>((resolve, reject) => {
     const fileReader = new FileReader();
 
@@ -40,17 +43,28 @@ function readFileAsDataUrl(file: File) {
       reject(new Error(PRODUCT_FORM_MESSAGES.imageProcessingFailed));
     };
 
-    fileReader.readAsDataURL(file);
+    fileReader.readAsDataURL(blob);
   });
 }
 
-function loadImageSource(src: string) {
+function isImageFile(file: File) {
+  return file.type.startsWith("image/") || MOBILE_IMAGE_FILE_NAME_PATTERN.test(file.name);
+}
+
+function loadImageFile(file: File) {
   return new Promise<HTMLImageElement>((resolve, reject) => {
     const image = new window.Image();
+    const objectUrl = URL.createObjectURL(file);
 
-    image.onload = () => resolve(image);
-    image.onerror = () => reject(new Error(PRODUCT_FORM_MESSAGES.imageProcessingFailed));
-    image.src = src;
+    image.onload = () => {
+      URL.revokeObjectURL(objectUrl);
+      resolve(image);
+    };
+    image.onerror = () => {
+      URL.revokeObjectURL(objectUrl);
+      reject(new Error(PRODUCT_FORM_MESSAGES.imageProcessingFailed));
+    };
+    image.src = objectUrl;
   });
 }
 
@@ -69,8 +83,25 @@ function getScaledDimensions(width: number, height: number) {
   };
 }
 
+function convertCanvasToBlob(canvas: HTMLCanvasElement) {
+  return new Promise<Blob>((resolve, reject) => {
+    canvas.toBlob(
+      (blob) => {
+        if (!blob) {
+          reject(new Error(PRODUCT_FORM_MESSAGES.imageProcessingFailed));
+          return;
+        }
+
+        resolve(blob);
+      },
+      "image/jpeg",
+      PRODUCT_FORM_LIMITS.imageUploadQuality,
+    );
+  });
+}
+
 async function prepareProductImage(file: File) {
-  if (!file.type.startsWith("image/")) {
+  if (!isImageFile(file)) {
     throw new Error(PRODUCT_FORM_MESSAGES.imageInvalid);
   }
 
@@ -78,8 +109,7 @@ async function prepareProductImage(file: File) {
     throw new Error(PRODUCT_FORM_MESSAGES.imageTooLarge);
   }
 
-  const dataUrl = await readFileAsDataUrl(file);
-  const image = await loadImageSource(dataUrl);
+  const image = await loadImageFile(file);
   const { width, height } = getScaledDimensions(image.width, image.height);
   const canvas = document.createElement("canvas");
 
@@ -92,9 +122,13 @@ async function prepareProductImage(file: File) {
     throw new Error(PRODUCT_FORM_MESSAGES.imageProcessingFailed);
   }
 
+  context.imageSmoothingEnabled = true;
+  context.imageSmoothingQuality = "high";
   context.drawImage(image, 0, 0, width, height);
 
-  return canvas.toDataURL("image/jpeg", PRODUCT_FORM_LIMITS.imageUploadQuality);
+  const preparedImageBlob = await convertCanvasToBlob(canvas);
+
+  return readBlobAsDataUrl(preparedImageBlob);
 }
 
 export default function AddProductForm() {

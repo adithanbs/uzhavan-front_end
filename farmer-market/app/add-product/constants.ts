@@ -26,7 +26,7 @@ export const PRODUCT_FORM_LIMITS = {
   location: 60,
   description: 400,
   phoneDigits: 10,
-  imageUploadMaxBytes: 5 * 1024 * 1024,
+  imageUploadMaxBytes: 15 * 1024 * 1024,
   imageMaxDimension: 1600,
   imageUploadQuality: 0.82,
 } as const;
@@ -85,7 +85,9 @@ export const PRODUCT_FORM_MESSAGES = {
   imageTooLarge: `Choose an image smaller than ${Math.floor(PRODUCT_FORM_LIMITS.imageUploadMaxBytes / (1024 * 1024))} MB.`,
   imageProcessing: "Preparing your photo...",
   imageProcessingFailed:
-    "We could not prepare that photo. Please try another image.",
+    "We could not prepare that photo. Please try another image or switch your camera format to JPG.",
+  imageUploadContractMismatch:
+    "Photo upload is not fully supported yet. The server currently accepts image links, not full photo data.",
   descriptionMax: `Description must be ${PRODUCT_FORM_LIMITS.description} characters or less.`,
   submitSuccess: "Your product was added successfully.",
   submitFailed: "Unable to save product.",

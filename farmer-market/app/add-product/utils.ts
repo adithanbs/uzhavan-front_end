@@ -33,7 +33,13 @@ export function validatePositivePrice(value: string) {
 }
 
 export function getProductSubmitErrorMessage(error: unknown) {
-  return error instanceof Error
-    ? error.message
-    : PRODUCT_FORM_MESSAGES.submitUnknown;
+  if (error instanceof Error) {
+    if (error.message.includes("Image URL must be 2048 characters or less")) {
+      return PRODUCT_FORM_MESSAGES.imageUploadContractMismatch;
+    }
+
+    return error.message;
+  }
+
+  return PRODUCT_FORM_MESSAGES.submitUnknown;
 }

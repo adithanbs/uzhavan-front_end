@@ -1,6 +1,7 @@
 import Link from "next/link";
 
 import Navbar from "@/app/components/Navbar";
+import { T } from "@/app/i18n/LanguageProvider";
 
 export default function NotFound() {
   return (
@@ -11,17 +12,16 @@ export default function NotFound() {
           404
         </p>
         <h1 className="text-3xl font-semibold text-slate-900 sm:text-4xl">
-          The product or page you requested is not available.
+          <T k="notFound.title" />
         </h1>
         <p className="max-w-xl text-sm leading-7 text-slate-600 sm:text-base">
-          We now return a dedicated not-found page so missing routes fail more
-          cleanly for users and search engines.
+          <T k="notFound.description" />
         </p>
         <Link
           href="/"
           className="w-full rounded-full bg-emerald-700 px-5 py-3 text-sm font-semibold text-white transition hover:bg-emerald-800 sm:w-auto"
         >
-          Back to marketplace
+          <T k="notFound.back" />
         </Link>
       </main>
     </div>

@@ -1,5 +1,8 @@
+"use client";
+
 import Link from "next/link";
 
+import { CategoryName, useLanguage } from "@/app/i18n/LanguageProvider";
 import type { Product } from "@/app/types/product";
 
 type ProductCardProps = {
@@ -7,6 +10,7 @@ type ProductCardProps = {
 };
 
 export default function ProductCard({ product }: ProductCardProps) {
+  const { t } = useLanguage();
   const imageSrc = product.images?.[0] || "/placeholder-market.svg";
 
   return (
@@ -24,7 +28,7 @@ export default function ProductCard({ product }: ProductCardProps) {
         <div className="space-y-4">
           <div className="space-y-2">
             <p className="text-xs font-semibold uppercase tracking-[0.28em] text-emerald-700">
-              {product.category}
+              <CategoryName category={product.category} />
             </p>
             <h2 className="text-lg font-semibold text-slate-900 sm:text-xl">{product.name}</h2>
             {product.quantity ? (
@@ -35,7 +39,7 @@ export default function ProductCard({ product }: ProductCardProps) {
           <div className="flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
             {product.price !== undefined ? (
               <div>
-                <p className="text-sm text-slate-500">Starting price</p>
+                <p className="text-sm text-slate-500">{t("card.startingPrice")}</p>
                 <p className="text-xl font-bold text-emerald-800 sm:text-2xl">₹{product.price}</p>
               </div>
             ) : null}
@@ -48,13 +52,13 @@ export default function ProductCard({ product }: ProductCardProps) {
             href={`tel:${product.phone}`}
             className="rounded-full bg-yellow-300 px-4 py-3 text-center text-sm font-semibold text-slate-950 transition hover:bg-yellow-200"
           >
-            Call Farmer
+            {t("card.callFarmer")}
           </a>
           <Link
             href={`/product/${product._id}`}
             className="rounded-full bg-emerald-700 px-4 py-3 text-center text-sm font-semibold text-white transition hover:bg-emerald-800"
           >
-            View Details
+            {t("card.viewDetails")}
           </Link>
         </div>
       </div>

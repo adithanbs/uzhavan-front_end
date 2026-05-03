@@ -3,8 +3,11 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
+import { LanguageToggle, useLanguage } from "@/app/i18n/LanguageProvider";
+
 export default function Navbar() {
   const pathname = usePathname();
+  const { t } = useLanguage();
   const isBrowseActive = pathname === "/" || pathname.startsWith("/product/");
   const isAddProductActive = pathname === "/add-product";
   const baseLinkClasses =
@@ -15,7 +18,7 @@ export default function Navbar() {
 
   return (
     <header className="border-b border-emerald-950/10 bg-emerald-950 text-white">
-      <div className="mx-auto flex w-full max-w-6xl flex-col gap-4 px-4 py-4 sm:px-6 md:flex-row md:items-center md:justify-between lg:px-8">
+      <div className="relative mx-auto grid w-full max-w-6xl gap-4 px-4 py-4 pr-16 sm:px-6 sm:pr-20 md:grid-cols-[1fr_auto_auto] md:items-center md:pr-6 lg:px-8">
         <Link href="/" className="flex items-center gap-3 self-start">
           <span className="inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-emerald-800 text-xl">
             U
@@ -25,12 +28,12 @@ export default function Navbar() {
              UzhavanMart
             </p>
             <p className="text-[11px] uppercase tracking-[0.22em] text-emerald-200 sm:text-xs sm:tracking-[0.3em]">
-              Farmer-first commerce
+              {t("nav.tagline")}
             </p>
           </div>
         </Link>
 
-        <nav className="grid w-full grid-cols-2 gap-3 md:w-auto md:flex md:items-center">
+        <nav className="grid grid-cols-2 gap-3 md:flex md:items-center">
           <Link
             href="/"
             aria-current={isBrowseActive ? "page" : undefined}
@@ -38,7 +41,7 @@ export default function Navbar() {
               isBrowseActive ? activeLinkClasses : inactiveLinkClasses
             }`}
           >
-            Browse
+            {t("nav.browse")}
           </Link>
           <Link
             href="/add-product"
@@ -47,9 +50,12 @@ export default function Navbar() {
               isAddProductActive ? activeLinkClasses : inactiveLinkClasses
             }`}
           >
-            Add Product
+            {t("nav.addProduct")}
           </Link>
         </nav>
+        <div className="absolute right-4 top-4 sm:right-6 md:static">
+          <LanguageToggle />
+        </div>
       </div>
     </header>
   );

@@ -10,18 +10,14 @@ import { createProductAction } from "@/app/add-product/actions";
 import {
   PRODUCT_CATEGORY_OPTIONS,
   PRODUCT_FORM_DEFAULT_VALUES,
-  PRODUCT_FORM_LABELS,
   PRODUCT_FORM_LIMITS,
   PRODUCT_FORM_MESSAGES,
   PRODUCT_FORM_PATTERNS,
-  PRODUCT_FORM_PLACEHOLDERS,
   PRODUCT_FORM_STYLES,
   type ProductFormValues,
 } from "@/app/add-product/constants";
-import {
-  getProductSubmitErrorMessage,
-  validatePositivePrice,
-} from "@/app/add-product/utils";
+import { getProductSubmitErrorMessage } from "@/app/add-product/utils";
+import { useLanguage } from "@/app/i18n/LanguageProvider";
 
 const MOBILE_IMAGE_FILE_NAME_PATTERN =
   /\.(avif|bmp|gif|heic|heif|jpe?g|png|webp)$/i;
@@ -133,6 +129,7 @@ async function prepareProductImage(file: File) {
 
 export default function AddProductForm() {
   const router = useRouter();
+  const { t } = useLanguage();
   const galleryInputRef = useRef<HTMLInputElement | null>(null);
   const cameraInputRef = useRef<HTMLInputElement | null>(null);
   const [serverError, setServerError] = useState("");
@@ -149,6 +146,37 @@ export default function AddProductForm() {
   } = useForm<ProductFormValues>({
     defaultValues: PRODUCT_FORM_DEFAULT_VALUES,
   });
+  const imageProcessingFailedMessage = t("form.error.imageProcessingFailed");
+
+  function getTranslatedSubmitError(error: unknown) {
+    const message = getProductSubmitErrorMessage(error);
+
+    if (message === PRODUCT_FORM_MESSAGES.imageUploadContractMismatch) {
+      return t("form.error.imageUploadContractMismatch");
+    }
+
+    if (message === PRODUCT_FORM_MESSAGES.submitUnknown) {
+      return t("form.error.submitUnknown");
+    }
+
+    if (message === PRODUCT_FORM_MESSAGES.submitFailed) {
+      return t("form.error.submitFailed");
+    }
+
+    if (message === PRODUCT_FORM_MESSAGES.imageInvalid) {
+      return t("form.error.imageInvalid");
+    }
+
+    if (message === PRODUCT_FORM_MESSAGES.imageTooLarge) {
+      return t("form.error.imageTooLarge");
+    }
+
+    if (message === PRODUCT_FORM_MESSAGES.imageProcessingFailed) {
+      return imageProcessingFailedMessage;
+    }
+
+    return message;
+  }
 
   async function onSubmit(form: ProductFormValues) {
     setServerError("");
@@ -157,14 +185,14 @@ export default function AddProductForm() {
       const result = await createProductAction(form);
 
       if (!result.success) {
-        throw new Error(result.error || PRODUCT_FORM_MESSAGES.submitFailed);
+        throw new Error(result.error || t("form.error.submitFailed"));
       }
 
       reset(PRODUCT_FORM_DEFAULT_VALUES);
       setImagePreview("");
       router.push("/?status=product-added");
     } catch (submitError) {
-      setServerError(getProductSubmitErrorMessage(submitError));
+      setServerError(getTranslatedSubmitError(submitError));
     }
   }
 
@@ -189,7 +217,7 @@ export default function AddProductForm() {
       clearErrors("image");
       setImagePreview(preparedImage);
     } catch (imageError) {
-      const message = getProductSubmitErrorMessage(imageError);
+      const message = getTranslatedSubmitError(imageError);
 
       setValue("image", "", {
         shouldDirty: true,
@@ -221,17 +249,17 @@ export default function AddProductForm() {
       <div className="grid gap-4 md:grid-cols-2">
         <label className="grid gap-2">
           <span className="text-sm font-medium text-slate-700">
-            {PRODUCT_FORM_LABELS.name}
+            {t("form.name")}
           </span>
           <input
             {...register("name", {
-              required: PRODUCT_FORM_MESSAGES.nameRequired,
+              required: t("form.error.nameRequired"),
               maxLength: {
                 value: PRODUCT_FORM_LIMITS.name,
-                message: PRODUCT_FORM_MESSAGES.nameMax,
+                message: t("form.error.nameMax"),
               },
             })}
-            placeholder={PRODUCT_FORM_PLACEHOLDERS.name}
+            placeholder={t("form.name")}
             className={PRODUCT_FORM_STYLES.field}
           />
           {errors.name ? (
@@ -240,18 +268,18 @@ export default function AddProductForm() {
         </label>
         <label className="grid gap-2">
           <span className="text-sm font-medium text-slate-700">
-            {PRODUCT_FORM_LABELS.category}
+            {t("form.category")}
           </span>
           <select
             {...register("category", {
-              required: PRODUCT_FORM_MESSAGES.categoryRequired,
+              required: t("form.error.categoryRequired"),
             })}
             className={PRODUCT_FORM_STYLES.select}
           >
-            <option value="">{PRODUCT_FORM_PLACEHOLDERS.category}</option>
+            <option value="">{t("form.selectCategory")}</option>
             {PRODUCT_CATEGORY_OPTIONS.map((category) => (
               <option key={category} value={category}>
-                {category}
+                {t(`category.${category}` as Parameters<typeof t>[0])}
               </option>
             ))}
           </select>
@@ -261,13 +289,14 @@ export default function AddProductForm() {
         </label>
         <label className="grid gap-2">
           <span className="text-sm font-medium text-slate-700">
-            {PRODUCT_FORM_LABELS.price}
+            {t("form.price")}
           </span>
           <input
             {...register("price", {
-              validate: validatePositivePrice,
+              validate: (value) =>
+                !value || Number(value) > 0 || t("form.error.priceInvalid"),
             })}
-            placeholder={PRODUCT_FORM_PLACEHOLDERS.price}
+            placeholder={t("form.price")}
             inputMode="decimal"
             className={PRODUCT_FORM_STYLES.field}
           />
@@ -277,16 +306,16 @@ export default function AddProductForm() {
         </label>
         <label className="grid gap-2">
           <span className="text-sm font-medium text-slate-700">
-            {PRODUCT_FORM_LABELS.quantity}
+            {t("form.quantity")}
           </span>
           <input
             {...register("quantity", {
               maxLength: {
                 value: PRODUCT_FORM_LIMITS.quantity,
-                message: PRODUCT_FORM_MESSAGES.quantityMax,
+                message: t("form.error.quantityMax"),
               },
             })}
-            placeholder={PRODUCT_FORM_PLACEHOLDERS.quantity}
+            placeholder={t("form.quantity")}
             className={PRODUCT_FORM_STYLES.field}
           />
           {errors.quantity ? (
@@ -295,17 +324,17 @@ export default function AddProductForm() {
         </label>
         <label className="grid gap-2">
           <span className="text-sm font-medium text-slate-700">
-            {PRODUCT_FORM_LABELS.location}
+            {t("form.location")}
           </span>
           <input
             {...register("location", {
-              required: PRODUCT_FORM_MESSAGES.locationRequired,
+              required: t("form.error.locationRequired"),
               maxLength: {
                 value: PRODUCT_FORM_LIMITS.location,
-                message: PRODUCT_FORM_MESSAGES.locationMax,
+                message: t("form.error.locationMax"),
               },
             })}
-            placeholder={PRODUCT_FORM_PLACEHOLDERS.location}
+            placeholder={t("form.location")}
             className={PRODUCT_FORM_STYLES.field}
           />
           {errors.location ? (
@@ -314,17 +343,17 @@ export default function AddProductForm() {
         </label>
         <label className="grid gap-2">
           <span className="text-sm font-medium text-slate-700">
-            {PRODUCT_FORM_LABELS.phone}
+            {t("form.phone")}
           </span>
           <input
             {...register("phone", {
-              required: PRODUCT_FORM_MESSAGES.phoneRequired,
+              required: t("form.error.phoneRequired"),
               pattern: {
                 value: PRODUCT_FORM_PATTERNS.phone,
-                message: PRODUCT_FORM_MESSAGES.phoneInvalid,
+                message: t("form.error.phoneInvalid"),
               },
             })}
-            placeholder={PRODUCT_FORM_PLACEHOLDERS.phone}
+            placeholder={t("form.phonePlaceholder")}
             inputMode="numeric"
             className={PRODUCT_FORM_STYLES.field}
           />
@@ -336,7 +365,7 @@ export default function AddProductForm() {
 
       <label className="grid gap-2">
         <span className="text-sm font-medium text-slate-700">
-          {PRODUCT_FORM_LABELS.image}
+          {t("form.image")}
         </span>
         <div className="grid gap-3 rounded-[1.5rem] border border-slate-200 bg-slate-50 p-4">
           <div className="flex flex-wrap gap-3">
@@ -345,14 +374,14 @@ export default function AddProductForm() {
               onClick={() => galleryInputRef.current?.click()}
               className="inline-flex min-h-11 items-center justify-center rounded-full bg-emerald-700 px-4 py-2 text-sm font-semibold text-white transition hover:bg-emerald-800"
             >
-              Choose From Device
+              {t("form.chooseDevice")}
             </button>
             <button
               type="button"
               onClick={() => cameraInputRef.current?.click()}
               className="inline-flex min-h-11 items-center justify-center rounded-full border border-emerald-200 bg-white px-4 py-2 text-sm font-semibold text-emerald-800 transition hover:border-emerald-300 hover:bg-emerald-50"
             >
-              Take Photo
+              {t("form.takePhoto")}
             </button>
             {imagePreview ? (
               <button
@@ -360,22 +389,21 @@ export default function AddProductForm() {
                 onClick={clearSelectedImage}
                 className="inline-flex min-h-11 items-center justify-center rounded-full border border-slate-200 bg-white px-4 py-2 text-sm font-semibold text-slate-700 transition hover:bg-slate-100"
               >
-                Remove Photo
+                {t("form.removePhoto")}
               </button>
             ) : null}
           </div>
 
           <p className="text-sm leading-6 text-slate-500">
-            Upload a photo from your phone, computer, or open the camera directly on
-            supported mobile devices.
+            {t("form.imageHelp")}
           </p>
 
           <input
             type="hidden"
             {...register("image", {
-              required: PRODUCT_FORM_MESSAGES.imageRequired,
+              required: t("form.error.imageRequired"),
               validate: (value) =>
-                value.startsWith("data:image/") || PRODUCT_FORM_MESSAGES.imageRequired,
+                value.startsWith("data:image/") || t("form.error.imageRequired"),
             })}
           />
           <input
@@ -399,7 +427,7 @@ export default function AddProductForm() {
               <div className="relative aspect-[4/3]">
                 <Image
                   src={imagePreview}
-                  alt="Selected product preview"
+                  alt={t("form.imagePreviewAlt")}
                   fill
                   unoptimized
                   sizes="(max-width: 768px) 100vw, 50vw"
@@ -408,14 +436,14 @@ export default function AddProductForm() {
               </div>
             ) : (
               <div className="flex aspect-[4/3] items-center justify-center px-4 text-center text-sm leading-6 text-slate-500">
-                Your selected product photo will appear here before you post it.
+                {t("form.imagePreviewEmpty")}
               </div>
             )}
           </div>
 
           {isPreparingImage ? (
             <p className="text-sm text-emerald-700">
-              {PRODUCT_FORM_MESSAGES.imageProcessing}
+              {t("form.error.imageProcessing")}
             </p>
           ) : null}
         </div>
@@ -426,16 +454,16 @@ export default function AddProductForm() {
 
       <label className="grid gap-2">
         <span className="text-sm font-medium text-slate-700">
-          {PRODUCT_FORM_LABELS.description}
+          {t("form.description")}
         </span>
         <textarea
           {...register("description", {
             maxLength: {
-              value: PRODUCT_FORM_LIMITS.description,
-              message: PRODUCT_FORM_MESSAGES.descriptionMax,
-            },
-          })}
-          placeholder={PRODUCT_FORM_PLACEHOLDERS.description}
+                value: PRODUCT_FORM_LIMITS.description,
+                message: t("form.error.descriptionMax"),
+              },
+            })}
+          placeholder={t("form.description")}
           rows={5}
           className={PRODUCT_FORM_STYLES.textarea}
         />
@@ -460,10 +488,10 @@ export default function AddProductForm() {
         className={PRODUCT_FORM_STYLES.submitButton}
       >
         {isPreparingImage
-          ? PRODUCT_FORM_MESSAGES.imageProcessing
+          ? t("form.error.imageProcessing")
           : isSubmitting
-            ? PRODUCT_FORM_LABELS.submitting
-            : PRODUCT_FORM_LABELS.submit}
+            ? t("form.submitting")
+            : t("form.submit")}
       </button>
     </form>
   );

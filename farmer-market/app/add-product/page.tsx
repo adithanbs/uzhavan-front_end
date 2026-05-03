@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 
 import Navbar from "@/app/components/Navbar";
 import AddProductForm from "@/app/add-product/AddProductForm";
+import { T } from "@/app/i18n/LanguageProvider";
 
 export const metadata: Metadata = {
   title: "Add Product",
@@ -16,15 +17,13 @@ export default function AddProductPage() {
       <main className="mx-auto flex w-full max-w-3xl flex-col gap-5 px-4 py-6 sm:gap-6 sm:px-6 sm:py-8 lg:px-8">
         <section className="space-y-3">
           <p className="text-xs font-semibold uppercase tracking-[0.24em] text-emerald-700 sm:text-sm sm:tracking-[0.3em]">
-            Seller onboarding
+            <T k="add.eyebrow" />
           </p>
           <h1 className="text-3xl font-semibold tracking-tight text-slate-900 sm:text-4xl">
-            Add a new product listing with safer validation
+            <T k="add.title" />
           </h1>
           <p className="text-sm leading-7 text-slate-600 sm:text-base">
-            This first-level listing form now validates important fields before
-            data enters the product pipeline, which makes future scaling to
-            databases and admin review much easier.
+            <T k="add.description" />
           </p>
         </section>
 

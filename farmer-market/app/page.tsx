@@ -4,6 +4,7 @@ import Navbar from "@/app/components/Navbar";
 import ProductCard from "@/app/components/ProductCard";
 import StatusBanner from "@/app/components/StatusBanner";
 import { siteConfig } from "@/app/config/site";
+import { T } from "@/app/i18n/LanguageProvider";
 import { getProducts } from "@/app/services/product-service";
 
 export const dynamic = "force-dynamic";
@@ -27,36 +28,34 @@ export default async function Home(props: PageProps<"/">) {
 
       <main className="mx-auto flex w-full max-w-6xl flex-col gap-8 px-4 py-6 sm:gap-10 sm:px-6 sm:py-8 lg:px-8">
         {status === "product-added" ? (
-          <StatusBanner message="Your product was added successfully." />
+          <StatusBanner messageKey="status.productAdded" />
         ) : null}
 
         <section className="grid gap-5 rounded-[1.75rem] border border-emerald-950/10 bg-white/80 p-5 shadow-[0_20px_70px_-45px_rgba(24,63,38,0.45)] backdrop-blur sm:gap-6 sm:rounded-[2rem] sm:p-8 lg:grid-cols-[1.3fr_0.7fr]">
           <div className="space-y-4">
             <p className="text-xs font-semibold uppercase tracking-[0.24em] text-emerald-700 sm:text-sm sm:tracking-[0.3em]">
-              Direct-from-farm marketplace
+              <T k="home.eyebrow" />
             </p>
             <h1 className="max-w-3xl font-serif text-3xl leading-tight text-slate-900 sm:text-4xl lg:text-5xl">
-              Discover trusted farmers, fresher produce, and faster local buying.
+              <T k="home.title" />
             </h1>
             <p className="max-w-2xl text-sm leading-7 text-slate-600 sm:text-base lg:text-lg">
-              UzhavanMart is optimized for quick browsing, direct calls, and
-              future-ready expansion into richer farmer listings, logistics, and
-              verified supply workflows.
+              <T k="home.description" />
             </p>
           </div>
 
           <div className="grid gap-3 rounded-[1.5rem] bg-emerald-950 px-4 py-5 text-white sm:rounded-[1.75rem] sm:px-5 sm:py-6">
             <div>
-              <p className="text-sm text-emerald-200">Live listings</p>
+              <p className="text-sm text-emerald-200"><T k="home.liveListings" /></p>
               <p className="text-2xl font-semibold sm:text-3xl">{products.length}</p>
             </div>
             <div>
-              <p className="text-sm text-emerald-200">Core categories</p>
-              <p className="text-lg font-medium sm:text-xl">Vegetables, fruits, grains</p>
+              <p className="text-sm text-emerald-200"><T k="home.coreCategories" /></p>
+              <p className="text-lg font-medium sm:text-xl"><T k="home.coreCategoriesValue" /></p>
             </div>
             <div>
-              <p className="text-sm text-emerald-200">Primary experience</p>
-              <p className="text-lg font-medium sm:text-xl">Fast browsing and direct contact</p>
+              <p className="text-sm text-emerald-200"><T k="home.primaryExperience" /></p>
+              <p className="text-lg font-medium sm:text-xl"><T k="home.primaryExperienceValue" /></p>
             </div>
           </div>
         </section>
@@ -65,10 +64,10 @@ export default async function Home(props: PageProps<"/">) {
           <div className="flex flex-col gap-3 sm:items-end sm:justify-between">
             <div>
               <p className="text-xs font-semibold uppercase tracking-[0.24em] text-emerald-700 sm:text-sm sm:tracking-[0.28em]">
-                Available produce
+                <T k="home.availableProduce" />
               </p>
               <h2 className="mt-2 text-xl font-semibold text-slate-900 sm:text-2xl">
-                Explore fresh farm produce with fast, simple, and reliable browsing
+                <T k="home.exploreTitle" />
               </h2>
             </div>
           </div>
@@ -80,8 +79,7 @@ export default async function Home(props: PageProps<"/">) {
               ))
             ) : (
               <div className="rounded-[1.5rem] border border-emerald-950/10 bg-white p-6 text-sm leading-6 text-slate-600 md:col-span-2 xl:col-span-3">
-                Products are not available right now. Please make sure the
-                backend API is running at http://localhost:5050/api/products.
+                <T k="home.empty" />
               </div>
             )}
           </div>

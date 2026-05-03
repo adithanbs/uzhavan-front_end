@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 
 import Navbar from "@/app/components/Navbar";
+import { CategoryName, T } from "@/app/i18n/LanguageProvider";
 import { getProductById } from "@/app/services/product-service";
 
 type ProductPageProps = PageProps<"/product/[id]">;
@@ -72,7 +73,7 @@ export default async function ProductDetail({ params }: ProductPageProps) {
         <section className="flex flex-col gap-5 rounded-[1.75rem] border border-emerald-950/10 bg-white/90 p-5 shadow-[0_30px_80px_-55px_rgba(24,63,38,0.35)] sm:gap-6 sm:rounded-[2rem] sm:p-6">
           <div className="space-y-3">
             <p className="text-xs font-semibold uppercase tracking-[0.24em] text-emerald-700 sm:text-sm sm:tracking-[0.28em]">
-              {product.category}
+              <CategoryName category={product.category} />
             </p>
             <h1 className="text-3xl font-semibold tracking-tight text-slate-900 sm:text-4xl">
               {product.name}
@@ -84,25 +85,25 @@ export default async function ProductDetail({ params }: ProductPageProps) {
 
           <dl className="grid gap-4 rounded-[1.5rem] bg-slate-50 p-4 text-sm text-slate-700 sm:p-5">
             <div className="flex flex-col gap-1 sm:flex-row sm:items-center sm:justify-between sm:gap-3">
-              <dt className="font-medium text-slate-500">Location</dt>
+              <dt className="font-medium text-slate-500"><T k="product.location" /></dt>
               <dd>{product.location}</dd>
             </div>
             {product.quantity ? (
               <div className="flex flex-col gap-1 sm:flex-row sm:items-center sm:justify-between sm:gap-3">
-                <dt className="font-medium text-slate-500">Available quantity</dt>
+                <dt className="font-medium text-slate-500"><T k="product.availableQuantity" /></dt>
                 <dd>{product.quantity}</dd>
               </div>
             ) : null}
             <div className="flex flex-col gap-1 sm:flex-row sm:items-center sm:justify-between sm:gap-3">
-              <dt className="font-medium text-slate-500">Contact</dt>
+              <dt className="font-medium text-slate-500"><T k="product.contact" /></dt>
               <dd>{product.phone}</dd>
             </div>
           </dl>
 
           <div className="space-y-3">
-            <h2 className="text-lg font-semibold text-slate-900">Description</h2>
+            <h2 className="text-lg font-semibold text-slate-900"><T k="product.description" /></h2>
             <p className="leading-7 text-slate-600">
-              {product.description || "Fresh farm produce listing with direct farmer contact."}
+              {product.description || <T k="product.fallbackDescription" />}
             </p>
           </div>
 
@@ -110,7 +111,7 @@ export default async function ProductDetail({ params }: ProductPageProps) {
             href={`tel:${product.phone}`}
             className="inline-flex w-full items-center justify-center rounded-full bg-yellow-300 px-5 py-3 text-sm font-semibold text-slate-950 transition hover:bg-yellow-200 sm:w-auto"
           >
-            Call Farmer Now
+            <T k="product.callNow" />
           </a>
         </section>
       </main>

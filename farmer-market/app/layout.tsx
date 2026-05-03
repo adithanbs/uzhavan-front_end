@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 
 import "./globals.css";
 import { getSiteUrl, siteConfig } from "@/app/config/site";
+import { LanguageProvider } from "@/app/i18n/LanguageProvider";
 
 export const metadata: Metadata = {
   metadataBase: new URL(getSiteUrl()),
@@ -48,7 +49,7 @@ export default function RootLayout({
   return (
     <html lang="en" className="h-full antialiased">
       <body className="min-h-full" suppressHydrationWarning>
-        {children}
+        <LanguageProvider>{children}</LanguageProvider>
       </body>
     </html>
   );

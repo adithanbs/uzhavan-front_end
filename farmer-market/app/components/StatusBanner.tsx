@@ -2,8 +2,12 @@
 
 import { useState } from "react";
 
+import { useLanguage } from "@/app/i18n/LanguageProvider";
+import type { TranslationKey } from "@/app/i18n/translations";
+
 type StatusBannerProps = {
-  message: string;
+  message?: string;
+  messageKey?: TranslationKey;
   variant?: "success" | "error";
 };
 
@@ -21,9 +25,12 @@ const variantStyles = {
 
 export default function StatusBanner({
   message,
+  messageKey,
   variant = "success",
 }: StatusBannerProps) {
+  const { t } = useLanguage();
   const [isVisible, setIsVisible] = useState(true);
+  const displayMessage = messageKey ? t(messageKey) : message;
 
   if (!isVisible) {
     return null;
@@ -35,13 +42,13 @@ export default function StatusBanner({
       aria-live={variant === "error" ? "assertive" : "polite"}
       className={`flex items-start justify-between gap-3 rounded-[1.5rem] border px-4 py-3 text-sm shadow-sm sm:px-5 ${variantStyles[variant].container}`}
     >
-      <p className="leading-6">{message}</p>
+      <p className="leading-6">{displayMessage}</p>
       <button
         type="button"
         onClick={() => setIsVisible(false)}
         className={`rounded-full px-3 py-1 text-xs font-semibold ${variantStyles[variant].button}`}
       >
-        Close
+        {t("status.close")}
       </button>
     </div>
   );

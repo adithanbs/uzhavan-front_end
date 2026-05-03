@@ -39,7 +39,7 @@ export default async function Home(props: PageProps<"/">) {
               Discover trusted farmers, fresher produce, and faster local buying.
             </h1>
             <p className="max-w-2xl text-sm leading-7 text-slate-600 sm:text-base lg:text-lg">
-              UzhaMart is optimized for quick browsing, direct calls, and
+              UzhavanMart is optimized for quick browsing, direct calls, and
               future-ready expansion into richer farmer listings, logistics, and
               verified supply workflows.
             </p>
@@ -68,7 +68,7 @@ export default async function Home(props: PageProps<"/">) {
                 Available produce
               </p>
               <h2 className="mt-2 text-xl font-semibold text-slate-900 sm:text-2xl">
-                Scalable listing cards with cleaner semantics and faster rendering
+                Explore fresh farm produce with fast, simple, and reliable browsing
               </h2>
             </div>
           </div>
